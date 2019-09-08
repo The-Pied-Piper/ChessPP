@@ -14,7 +14,7 @@ jobs:
 
       - run:
           name: Install Packages
-          command: apk add g++ gcc make cmake
+          command: apk add g++ gcc make cmake git
 
       - run:
           command: cmake -B build
