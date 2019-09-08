@@ -17,6 +17,7 @@ jobs:
           command: apk add g++ gcc make cmake git
 
       - run:
+          name: Generate Makefile
           command: cmake -B build
 
       - run:
