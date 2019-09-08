@@ -1,0 +1,29 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: alpine:edge
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          command: mkdir build
+
+      - run:
+          name: Install Packages
+          command: apk add g++ gcc make cmake
+
+      - run:
+          command: cmake -B build
+
+      - run:
+          name: Build
+          command: cmake --build build
+
+      - run:
+          name: Test
+          command: build/bin/TestChess++
+
