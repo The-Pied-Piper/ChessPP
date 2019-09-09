@@ -19,6 +19,7 @@ jobs:
             apt upgrade &&
             apt install git cmake clang clang-tidy python-pip &&
             pip install pyyaml
+
       - run:
           name: Generate Makefile
           command: |
