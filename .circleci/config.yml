@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: umarmkhan/ubuntu:latest
+      - image: umarmkhan/ubuntucpp:latest
 
     working_directory: ~/repo
 
