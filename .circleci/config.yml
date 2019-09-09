@@ -14,15 +14,21 @@ jobs:
 
       - run:
           name: Install Packages
-          command: sudo apt install cmake clang clang-tidy
+          command: |
+            apt update &&
+            apt upgrade &&
+            apt install git cmake clang clang-tidy python-pip &&
+            pip install pyyaml
       - run:
           name: Generate Makefile
-          command: cmake -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          command: |
+            cd build &&
+            cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
 
       - run:
           name: Lint
           command: |
-            mv ./build/compile_commands.json . &&
+            cd build &&
             /usr/lib/llvm-6.0/share/clang/run-clang-tidy.py ./src/*
 
       - run:
