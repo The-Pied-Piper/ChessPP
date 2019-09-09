@@ -16,8 +16,8 @@ jobs:
           name: Install Packages
           command: |
             apt update &&
-            apt upgrade &&
-            apt install git cmake clang clang-tidy python-pip &&
+            apt upgrade -y &&
+            apt install -y git cmake clang clang-tidy python-pip &&
             pip install pyyaml
 
       - run:
