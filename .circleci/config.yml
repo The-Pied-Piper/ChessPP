@@ -22,7 +22,7 @@ jobs:
           name: Lint
           command: |
             cd build &&
-            /usr/lib/llvm-6.0/share/clang/run-clang-tidy.py
+            /usr/lib/llvm-6.0/share/clang/run-clang-tidy.py ../src/*
 
       - run:
           name: Build
