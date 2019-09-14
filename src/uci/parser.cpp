@@ -28,3 +28,11 @@ std::vector<std::string> Parser::tokenise(std::string const &input)
     }
     return result;
 }
+
+std::string Parser::tolower(std::string const& text) {
+    std::string result = "";
+    for (char character : text) {
+        result.push_back(character);
+    }
+    return result;
+}

@@ -1,3 +1,12 @@
+/**
+ * @file parser.hpp
+ * @author Umar Khan
+ * @date 2019-09-14
+ *
+ * @copyright Copyright (c) 2019
+ *
+ */
+
 #ifndef CHESSPP_PARSER_H
 #define CHESSPP_PARSER_H
 
@@ -11,7 +20,15 @@
 class Parser
 {
 private:
-    /* data */
+
+    /**
+     * @brief Converts a string to lower case
+     *
+     * @param text The string to be lower cased
+     * @return The string with all upper case characters converted to lower case
+     */
+    std::string tolower(std::string const& text);
+
 public:
 
     /**
