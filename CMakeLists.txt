@@ -22,6 +22,7 @@ include(CTest)
 # Setup the main library
 add_library(${This} STATIC
     ${PROJECT_SOURCE_DIR}/src/uci/engine.cpp
+    ${PROJECT_SOURCE_DIR}/src/uci/parser.cpp
 )
 target_include_directories(${This} PUBLIC
     ${PROJECT_SOURCE_DIR}/include

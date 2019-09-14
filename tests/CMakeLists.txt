@@ -32,7 +32,8 @@ add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
                  EXCLUDE_FROM_ALL)
 
 add_executable(${This}
-    ${PROJECT_SOURCE_DIR}/tests/uci/engine.cpp
+    ${PROJECT_SOURCE_DIR}/tests/uci/test_engine.cpp
+    ${PROJECT_SOURCE_DIR}/tests/uci/test_parser.cpp
 )
 
 target_link_libraries(${This} PUBLIC
