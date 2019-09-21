@@ -4,7 +4,7 @@
 
 A chess UCI adapter. Provides an easy to use API for consuming and producing UCI commands.
 
-## NOTE: This Library is still under development.
+## NOTE: This Library is still under development and not at all ready for use. Contributions are welcome!!!
 
 ## Table of Contents
 1. [Getting Started](#getting-started)
