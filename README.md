@@ -10,8 +10,8 @@ A chess UCI adapter. Provides an easy to use API for consuming and producing UCI
 1. [Getting Started](#getting-started)
     1. [Installation](#installation)
     1. [Usage](#usage)
-        1. [Register A Command](#register-a-command)
-        1. [Issue A Command](#issue-a-command)
+        1. [Register Command](#register-command)
+        1. [Issue Command](#issue-command)
         1. [Start](#start)
 
 ## Getting Started
@@ -31,7 +31,7 @@ target_link_libraries(My_project PUBLIC
 ### Usage
 
 
-#### Registering A Command
+#### Register Command
 
 To tell the UCI what to do when it recieves a command on standard input we simply have to pass it the callback we would like to run:
 
@@ -57,7 +57,7 @@ int main()
 }
 ```
 
-#### Issue command
+#### Issue Command
 
 To issue a command just tell the UCI the name of the command followed by a vector containing any arguments:
 
