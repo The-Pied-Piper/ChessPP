@@ -1,6 +1,6 @@
-#include "chesspp/parser.hpp"
+#include "parser.hpp"
 
-std::vector<std::string> Parser::tokenise(std::string const &input)
+std::vector<std::string> chesspp::Parser::tokenise(std::string const &input)
 {
 
     std::vector<std::string> result;
@@ -29,7 +29,7 @@ std::vector<std::string> Parser::tokenise(std::string const &input)
     return result;
 }
 
-std::string Parser::tolower(std::string const& text) {
+std::string chesspp::Parser::tolower(std::string const& text) {
     std::string result = "";
     for (char character : text) {
         result.push_back(character);

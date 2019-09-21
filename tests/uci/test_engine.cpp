@@ -2,7 +2,7 @@
 #include "vector"
 
 #include "gtest/gtest.h"
-#include "chesspp/engine.hpp"
+#include "uci/engine.hpp"
 
 // TEST(Engine, Tokenise_test_generic) {
 //     Engine engine;

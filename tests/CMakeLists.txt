@@ -36,6 +36,10 @@ add_executable(${This}
     ${PROJECT_SOURCE_DIR}/tests/uci/test_parser.cpp
 )
 
+target_include_directories(${This} PUBLIC
+    ${PROJECT_SOURCE_DIR}/src
+)
+
 target_link_libraries(${This} PUBLIC
     gtest_main
     Chess++
