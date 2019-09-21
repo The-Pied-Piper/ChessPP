@@ -13,6 +13,8 @@
 #include <string>
 #include <vector>
 
+#include "command/command.hpp"
+
 namespace chesspp
 {
 /**

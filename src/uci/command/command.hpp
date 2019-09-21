@@ -15,6 +15,10 @@
 #include <vector>
 #include <iostream>
 
+#include "chesspp/argument.hpp"
+
+// #include <chesspp/argument.hpp>
+
 namespace chesspp
 {
 
@@ -48,37 +52,11 @@ struct ArgumentDefinition
 };
 
 /**
- * @brief Stores value of an actual command that was received.
- *
- */
-struct Argument
-{
-
-    /**
-     * @brief The value of the argument (eg. "on" for debugging)
-     *
-     */
-    std::string value = NULL;
-
-    /**
-     * @brief The value of the parameter if it has any. Will be `NULL` if the
-     *        argument takes no parameters
-     *
-     */
-    std::string parameter = NULL;
-
-    Argument(std::string value, std::string parameter)
-        : value(value), parameter(parameter)
-    {
-    }
-};
-
-/**
  * @brief Base class for all UCI commands
  *
- * @tparam functor The callback to execute the command
+ * @tparam function The callback to execute the command
  */
-template <typename functor>
+template <typename function>
 class Command
 {
 private:
@@ -90,7 +68,7 @@ private:
 
     std::vector<ArgumentDefinition> accepted_arguments;
 
-    const functor callback;
+    const function callback;
 
 public:
     /**
@@ -98,7 +76,7 @@ public:
      *
      * @param callback
      */
-    Command(functor &const callback)
+    Command(function const &callback)
         : callback(callback)
     {
     }
