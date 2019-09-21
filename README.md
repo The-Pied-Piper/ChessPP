@@ -14,7 +14,9 @@ A chess UCI adapter. Provides an easy to use API for consuming and producing UCI
         1. [Issue A Command](#issue-a-command)
         1. [Start](#start)
 
-## Installation
+## Getting Started
+
+### Installation
 
 The package can be build most easily using cmake:
 
@@ -26,10 +28,10 @@ target_link_libraries(My_project PUBLIC
 )
 ```
 
-## Usage
+### Usage
 
 
-### Registering A Command
+#### Registering A Command
 
 To tell the UCI what to do when it recieves a command on standard input we simply have to pass it the callback we would like to run:
 
@@ -55,9 +57,9 @@ int main()
 }
 ```
 
-### Issue command
+#### Issue command
 
-To issue a command just tell the UCI the name of the command folowed by a vector containing any arguments:
+To issue a command just tell the UCI the name of the command followed by a vector containing any arguments:
 
 ```c++
 #include <vector>
@@ -73,9 +75,9 @@ int main(){
 
 The UCI will now make sure that the command is valid before issuing it.
 
-### Start
+#### Start
 
-To tell the UCI to start listening for commands we jsut call the start function along with the mode ("engine" or "interface"):
+To tell the UCI to start listening for commands we just call the start function along with the mode ("engine" or "interface"):
 
 ```c++
 #include <chesspp/uci.hpp>
