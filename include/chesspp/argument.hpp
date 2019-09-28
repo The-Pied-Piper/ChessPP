@@ -16,16 +16,16 @@ struct Argument
      * @brief The value of the argument (eg. "on" for debugging)
      *
      */
-    std::string value = NULL;
+    std::string value;
 
     /**
      * @brief The value of the parameter if it has any. Will be `NULL` if the
      *        argument takes no parameters
      *
      */
-    std::string parameter = NULL;
+    std::string parameter;
 
-    Argument(std::string value, std::string parameter)
+    Argument(std::string& value, std::string& parameter)
         : value(value), parameter(parameter)
     {
     }
