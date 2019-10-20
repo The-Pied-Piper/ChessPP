@@ -5,9 +5,9 @@
 chesspp::ArgumentDefinition const *chesspp::Command::find_argument(
     std::string const &argument_string) const
 {
-    for (ArgumentDefinition const & accepted_argument : accepted_arguments)
+    for (ArgumentDefinition const &accepted_argument : accepted_arguments)
     {
-        for (std::string value : accepted_argument.values)
+        for (std::string const &value : accepted_argument.values)
         {
             if (value == argument_string)
             {
@@ -50,7 +50,7 @@ std::vector<chesspp::Argument> chesspp::Command::parse_arguments(
             std::reverse(parameters.begin(), parameters.end());
 
             // Create the argument and add it to the result list
-            chesspp::Argument argument (argument_string, parameters);
+            chesspp::Argument argument(argument_string, parameters);
             arguments.push_back(argument);
 
             // empty the parameter list for the new argument.
@@ -72,20 +72,20 @@ std::vector<chesspp::Argument> chesspp::Command::parse_arguments(
 }
 
 void chesspp::Command::issue(std::vector<std::string> const &arguments) const
+{
+    // Add the name of the command to the output
+    std::string output = name;
+
+    // Make sure that the arguments can be parsed. This will throw an
+    // ArgumentParseException if we can't parse the arguments.
+    parse_arguments(arguments);
+
+    // Add arguments to the output string
+    for (const std::string argument : arguments)
     {
-        // Add the name of the command to the output
-        std::string output = name;
-
-        // Make sure that the arguments can be parsed. This will throw an
-        // ArgumentParseException if we can't parse the arguments.
-        parse_arguments(arguments);
-
-        // Add arguments to the output string
-        for (const std::string argument : arguments)
-        {
-            output.append(" " + argument);
-        }
-
-        // Print output to stdout.
-        std::cout << output << "\n";
+        output.append(" " + argument);
     }
+
+    // Print output to stdout.
+    std::cout << output << "\n";
+}
