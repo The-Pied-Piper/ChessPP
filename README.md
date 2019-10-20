@@ -42,7 +42,7 @@ To tell the UCI what to do when it recieves a command on standard input we simpl
 #include "chesspp/argument.hpp"
 
 
-void debug_command(std::vector<chesspp::Argument> const & args){
+void debug_command(std::vector<chesspp::Argument> args){
     if(args[0].value == "on") {
         // switch debugging on
     } else {
