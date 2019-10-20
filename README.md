@@ -37,7 +37,9 @@ To tell the UCI what to do when it recieves a command on standard input we simpl
 
 ```c++
 #include <vector>
-#include <chesspp/uci.hpp>
+
+#include "chesspp/uci.hpp"
+#include "chesspp/argument.hpp"
 
 
 void debug_command(std::vector<chesspp::Argument> const & args){
@@ -63,7 +65,8 @@ To issue a command just tell the UCI the name of the command followed by a vecto
 
 ```c++
 #include <vector>
-#include <chesspp/uci.hpp>
+
+#include "chesspp/uci.hpp"
 
 int main(){
     chesspp::UCI uci;
@@ -80,7 +83,7 @@ The UCI will now make sure that the command is valid before issuing it.
 To tell the UCI to start listening for commands we just call the start function along with the mode ("engine" or "interface"):
 
 ```c++
-#include <chesspp/uci.hpp>
+#include "chesspp/uci.hpp"
 
 int main(){
     chesspp::UCI uci;
