@@ -28,10 +28,9 @@ std::vector<chesspp::Argument> chesspp::Command::parse_arguments(
     std::vector<std::string> parameters;
 
     // Start parsing tokens from the back to the front.
-    auto iter = argument_strings.rbegin();
-    for (iter; iter != argument_strings.rend(); ++iter)
+    for (auto it = argument_strings.rbegin(); it != argument_strings.rend(); ++it)
     {
-        std::string argument_string = *iter;
+        std::string argument_string = *it;
 
         // Try to find a matching argument definition
         chesspp::ArgumentDefinition const *arg_def = find_argument(argument_string);
