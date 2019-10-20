@@ -34,6 +34,7 @@ add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
 add_executable(${This}
     ${PROJECT_SOURCE_DIR}/tests/uci/test_engine.cpp
     ${PROJECT_SOURCE_DIR}/tests/uci/test_parser.cpp
+    ${PROJECT_SOURCE_DIR}/tests/uci/test_command.cpp
 )
 
 target_include_directories(${This} PUBLIC

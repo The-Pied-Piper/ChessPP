@@ -2,6 +2,7 @@
 #define CHESSPP_ARGUMENT_H
 
 #include <string>
+#include <vector>
 
 namespace chesspp
 {
@@ -13,20 +14,19 @@ struct Argument
 {
 
     /**
-     * @brief The value of the argument (eg. "on" for debugging)
+     * @brief The value of the argument (eg. "on" for  the debug command)
      *
      */
     std::string value;
 
     /**
-     * @brief The value of the parameter if it has any. Will be `NULL` if the
-     *        argument takes no parameters
+     * @brief The argument's parameters if it has any.
      *
      */
-    std::string parameter;
+    std::vector<std::string> parameters;
 
-    Argument(std::string& value, std::string& parameter)
-        : value(value), parameter(parameter)
+    Argument(std::string &value, std::vector<std::string> &parameters)
+        : value(value), parameters(parameters)
     {
     }
 };

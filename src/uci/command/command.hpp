@@ -14,13 +14,25 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <exception>
 
 #include "chesspp/argument.hpp"
 
-// #include <chesspp/argument.hpp>
-
 namespace chesspp
 {
+
+/**
+ * @brief This exception is thrown when the command encounters a sequence of
+ *        arguments that is could not parse.
+ *
+ */
+class ArgumentParseException : public std::exception
+{
+    virtual const char *what() const throw()
+    {
+        return "Could not parse the arguments";
+    }
+};
 
 /**
  * @brief Defines an argument that the command will accept as valid.
@@ -37,26 +49,26 @@ struct ArgumentDefinition
     std::vector<std::string> values;
 
     /**
-     * @brief Whether or not the argument expects a parameter. If this is true
-     *        the next token is taken as this argument's parameter otherwise the
-     *        next token is it's own argument.
+     * @brief Indicates the number of tokens (words) the argument expects
+     *        in it's parameters. 0 means no parameters are expected, while -1
+     *        indicates an arbitary number of tokens. In the latter case all
+     *        tokens untill the next valid argument definition are included in
+     *        the parameters list.
      */
-    const bool has_parameter = NULL;
+    int const num_parameters;
 
     ArgumentDefinition(
         std::vector<std::string> const &values,
-        bool const has_parameter)
-        : values(values), has_parameter(has_parameter)
+        int const &num_parameters = 0)
+        : values(values), num_parameters(num_parameters)
     {
     }
 };
 
 /**
- * @brief Base class for all UCI commands
+ * @brief Represents a UCI command
  *
- * @tparam function The callback to execute the command
  */
-template <typename function>
 class Command
 {
 private:
@@ -66,42 +78,62 @@ private:
      */
     std::string name;
 
+    /**
+     * @brief Holds the the definition for the arguments that this command will
+     *        accept
+     *
+     */
     std::vector<ArgumentDefinition> accepted_arguments;
 
-    const function callback;
+    /**
+     * @brief The callback to run when this command needs to be executed.
+     *
+     */
+    void (*callback)(std::vector<Argument>) = nullptr;
+
+    /**
+     * @brief This function matches a string to an ArgumentDefinition value.
+     *
+     * @param argument_string The string to use for matching
+     *
+     * @return ArgumentDefinition const* A pointer to the argument that has a
+     *         matching value to the given string. If no match is found then a
+     *         `nullptr` is returned.
+     */
+    ArgumentDefinition const *find_argument(
+        std::string const &argument_string) const;
 
 public:
     /**
      * @brief Construct a new Command object
      *
-     * @param callback
+     * @param name The name of the command
+     * @param accepted_arguments A vector containing the arguments that this command accepts
      */
-    Command(function const &callback)
-        : callback(callback)
+    Command(
+        std::string const &name,
+        std::vector<ArgumentDefinition> const &accepted_arguments)
+        : name(name), accepted_arguments(accepted_arguments)
     {
     }
 
-    bool check(std::string const &arguments) const;
+    /**
+     * @brief This function parses a vector of argument strings into a vector of
+     *        Argument objects
+     *
+     * @return std::vector<Argument> const& The list of parsed arguments
+     *
+     * @throw ArgumentParseException
+     */
+    std::vector<Argument> parse_arguments(
+        std::vector<std::string> const &argument_strings) const;
 
     /**
      * @brief Issues the command over stdout with the given arguments
      *
+     * @throw ArgumentParseException
      */
-    void issue(std::vector<std::string> const &arguments) const
-    {
-        std::string output = name;
-        if (not check(arguments))
-        {
-            // TODO: replace this with an exception
-            return;
-        }
-        for (const std::string argument : arguments)
-        {
-            output.append(" " + argument);
-        }
-
-        std::cout << output << "\n";
-    }
+    void issue(std::vector<std::string> const &arguments) const;
 };
 
 } // namespace chesspp
