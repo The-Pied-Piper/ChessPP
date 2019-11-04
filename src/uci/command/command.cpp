@@ -1,6 +1,44 @@
 #include <iostream>
 #include <algorithm>
+#include <string>
+#include <vector>
+
 #include "command.hpp"
+#include "chesspp/argument.hpp"
+
+void chesspp::Command::issue(std::vector<std::string> const &arguments) const
+{
+    // Add the name of the command to the output
+    std::string output = name;
+
+    // Make sure that the arguments can be parsed. This will throw an
+    // ArgumentParseException if we can't parse the arguments.
+    parse_arguments(arguments);
+
+    // Add arguments to the output string
+    for (const std::string argument : arguments)
+    {
+        output.append(" " + argument);
+    }
+
+    // Print output to stdout.
+    std::cout << output << "\n";
+}
+
+std::vector<chesspp::Argument> chesspp::Command::parse_arguments(
+    std::vector<std::string> const &argument_strings) const
+{
+    // Convert the strings into Argument objects
+    std::vector<Argument> arguments = get_arguments(argument_strings);
+
+    // Check if all the required arguments are included.
+    if (not check_required_arguments(arguments))
+    {
+        throw MissingArgumentException();
+    }
+
+    return arguments;
+}
 
 chesspp::ArgumentDefinition const *chesspp::Command::find_argument(
     std::string const &argument_string) const
@@ -18,7 +56,7 @@ chesspp::ArgumentDefinition const *chesspp::Command::find_argument(
     return nullptr;
 }
 
-std::vector<chesspp::Argument> chesspp::Command::parse_arguments(
+std::vector<chesspp::Argument> chesspp::Command::get_arguments(
     std::vector<std::string> const &argument_strings) const
 {
     // Stores the arguments we will return
@@ -71,21 +109,49 @@ std::vector<chesspp::Argument> chesspp::Command::parse_arguments(
     return arguments;
 }
 
-void chesspp::Command::issue(std::vector<std::string> const &arguments) const
+std::vector<chesspp::ArgumentDefinition> const chesspp::Command::get_required_arguments() const
 {
-    // Add the name of the command to the output
-    std::string output = name;
+    // stores the required arguments that we need to find
+    std::vector<ArgumentDefinition> required_arguments;
 
-    // Make sure that the arguments can be parsed. This will throw an
-    // ArgumentParseException if we can't parse the arguments.
-    parse_arguments(arguments);
-
-    // Add arguments to the output string
-    for (const std::string argument : arguments)
+    // loop over the accepted arguments looking for ones that have the required
+    // flag.
+    for (ArgumentDefinition const &argument : accepted_arguments)
     {
-        output.append(" " + argument);
+        if (argument.required)
+        {
+            required_arguments.push_back(argument);
+        }
     }
+    return required_arguments;
+}
 
-    // Print output to stdout.
-    std::cout << output << "\n";
+bool chesspp::Command::check_required_arguments(std::vector<chesspp::Argument> arguments) const
+{
+    std::vector<chesspp::ArgumentDefinition> const &required_arguments = get_required_arguments();
+
+    for (ArgumentDefinition const &required_argument : required_arguments)
+    {
+        bool found = false;
+        for (Argument const &argument : arguments)
+        {
+            for (std::string const &value : required_argument.values)
+            {
+                if (value == argument.value)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (found)
+            {
+                break;
+            }
+        }
+        if (not found)
+        {
+            return false;
+        }
+    }
+    return true;
 }

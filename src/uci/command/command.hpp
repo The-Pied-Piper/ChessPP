@@ -23,7 +23,7 @@ namespace chesspp
 
 /**
  * @brief This exception is thrown when the command encounters a sequence of
- *        arguments that is could not parse.
+ *        arguments that it could not parse.
  *
  */
 class ArgumentParseException : public std::exception
@@ -33,6 +33,20 @@ class ArgumentParseException : public std::exception
         return "Could not parse the arguments";
     }
 };
+
+/**
+ * @brief This exception is thrown when the command is missing a required
+ *        argument
+ *
+ */
+class MissingArgumentException : public std::exception
+{
+    virtual const char *what() const throw()
+    {
+        return "Missing a required argument";
+    }
+};
+
 
 /**
  * @brief Defines an argument that the command will accept as valid.
@@ -46,21 +60,29 @@ struct ArgumentDefinition
      *        then the argument will accept any value at all.
      *
      */
-    std::vector<std::string> values;
+    std::vector<std::string> const values;
 
     /**
      * @brief Indicates the number of tokens (words) the argument expects
      *        in it's parameters. 0 means no parameters are expected, while -1
      *        indicates an arbitary number of tokens. In the latter case all
      *        tokens untill the next valid argument definition are included in
-     *        the parameters list.
+     *        the parameters list. Default is `0`.
      */
     int const num_parameters;
 
+    /**
+     * @brief Indicastes whether the argument is required or not. Default is
+     *        `false`
+     *
+     */
+    bool const required;
+
     ArgumentDefinition(
         std::vector<std::string> const &values,
-        int const &num_parameters = 0)
-        : values(values), num_parameters(num_parameters)
+        int const &num_parameters = 0,
+        bool const &required = false)
+        : values(values), num_parameters(num_parameters), required(required)
     {
     }
 };
@@ -92,6 +114,23 @@ private:
     void (*callback)(std::vector<Argument>) = nullptr;
 
     /**
+     * @brief Get the required arguments for this command
+     *
+     * @return std::vector<ArgumentDefinition> const& A vector containing the
+     *         that are required by this command
+     */
+    std::vector<ArgumentDefinition> const get_required_arguments() const;
+
+    /**
+     * @brief Used to check that a list of arguments contains all the required
+     *        arguments for this command
+     *
+     * @return true If all the required arguments are in the argument vector.
+     * @return false If there were missing required arguments.
+     */
+    bool check_required_arguments(std::vector<Argument> arguments) const;
+
+    /**
      * @brief This function matches a string to an ArgumentDefinition value.
      *
      * @param argument_string The string to use for matching
@@ -102,6 +141,17 @@ private:
      */
     ArgumentDefinition const *find_argument(
         std::string const &argument_string) const;
+
+    /**
+     * @brief This function converts a vector of argument strings into a vector
+     *        of Argument objects
+     *
+     * @return std::vector<Argument> const& The list of parsed arguments
+     *
+     * @throw ArgumentParseException
+     */
+    std::vector<Argument> get_arguments(
+        std::vector<std::string> const &argument_strings) const;
 
 public:
     /**
@@ -118,12 +168,13 @@ public:
     }
 
     /**
-     * @brief This function parses a vector of argument strings into a vector of
-     *        Argument objects
+     * @brief This function attempts to parse a vector of argument strings into
+     *        a vector of Argument objects
      *
      * @return std::vector<Argument> const& The list of parsed arguments
      *
      * @throw ArgumentParseException
+     * @throw MissingArgumentException
      */
     std::vector<Argument> parse_arguments(
         std::vector<std::string> const &argument_strings) const;
@@ -132,8 +183,24 @@ public:
      * @brief Issues the command over stdout with the given arguments
      *
      * @throw ArgumentParseException
+     * @throw MissingArgumentException
      */
     void issue(std::vector<std::string> const &arguments) const;
+
+    /**
+     * @brief Attach a callback function to this command. The callback will be
+     *        run when this command needs to be executed
+     *
+     * @param callback
+     */
+    void attach_callback(void (*callback)(std::vector<Argument>));
+
+    /**
+     * @brief Executes this command
+     *
+     * @param arguments The arguments to execute the command with.
+     */
+    void run(std::vector<Argument> arguments);
 };
 
 } // namespace chesspp

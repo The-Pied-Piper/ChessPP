@@ -1,10 +1,15 @@
 #include "gtest/gtest.h"
 #include "uci/command/command.hpp"
 
+
+/*******************************************************************************
+ *                        Test parse_arguments( ... )
+*******************************************************************************/
+
 TEST(Command, parse_arguments_test_no_parameter)
 {
     std::vector<chesspp::ArgumentDefinition> accpeted_arguments = {
-        chesspp::ArgumentDefinition({"value1", "value2"}, 0),
+        chesspp::ArgumentDefinition({"value1", "value2"}, 0, true),
         chesspp::ArgumentDefinition({"value3", "value4", "value5"}, -1),
         chesspp::ArgumentDefinition({"value6"}, 3)};
 
@@ -20,7 +25,7 @@ TEST(Command, parse_arguments_test_any_parameters)
 {
     std::vector<chesspp::ArgumentDefinition> accpeted_arguments = {
         chesspp::ArgumentDefinition({"value1", "value2"}, 0),
-        chesspp::ArgumentDefinition({"value3", "value4", "value5"}, -1),
+        chesspp::ArgumentDefinition({"value3", "value4", "value5"}, -1, true),
         chesspp::ArgumentDefinition({"value6"}, 3)};
 
     chesspp::Command const test_command("test_command", accpeted_arguments);
@@ -40,7 +45,7 @@ TEST(Command, parse_arguments_test_fixed_parameters)
     std::vector<chesspp::ArgumentDefinition> accpeted_arguments = {
         chesspp::ArgumentDefinition({"value1", "value2"}, 0),
         chesspp::ArgumentDefinition({"value3", "value4", "value5"}, -1),
-        chesspp::ArgumentDefinition({"value6"}, 3)};
+        chesspp::ArgumentDefinition({"value6"}, 3, true)};
 
     chesspp::Command const test_command("test_command", accpeted_arguments);
     std::vector<std::string> args = {"value6", "param0", "param1", "param2"};
@@ -57,7 +62,7 @@ TEST(Command, parse_arguments_test_multiple_arguments)
 {
     std::vector<chesspp::ArgumentDefinition> accpeted_arguments = {
         chesspp::ArgumentDefinition({"value1", "value2"}, 0),
-        chesspp::ArgumentDefinition({"value3", "value4", "value5"}, -1),
+        chesspp::ArgumentDefinition({"value3", "value4", "value5"}, -1, true),
         chesspp::ArgumentDefinition({"value6"}, 3),
         chesspp::ArgumentDefinition({"value7", "value8", "value9"}, 0),
         chesspp::ArgumentDefinition({"value10"}, 0),
@@ -94,7 +99,7 @@ TEST(Command, parse_arguments_test_equal_param)
 {
     std::vector<chesspp::ArgumentDefinition> accpeted_arguments = {
         chesspp::ArgumentDefinition({"value1", "value2"}, 0),
-        chesspp::ArgumentDefinition({"value3", "value4", "value5"}, -1),
+        chesspp::ArgumentDefinition({"value3", "value4", "value5"}, -1, true),
         chesspp::ArgumentDefinition({"value6"}, 3),
         chesspp::ArgumentDefinition({"value7", "value8", "value9"}, 0),
         chesspp::ArgumentDefinition({"value10"}, 0),
@@ -156,4 +161,22 @@ TEST(Command, parse_arguments_test_bad_argument_name)
         "value6", "param0", "param1", "param2"};
 
     EXPECT_THROW(test_command.parse_arguments(args), chesspp::ArgumentParseException);
+}
+
+TEST(Command, parse_arguments_test_missing_required)
+{
+    std::vector<chesspp::ArgumentDefinition> accpeted_arguments = {
+        chesspp::ArgumentDefinition({"value1", "value2"}, 0, true),
+        chesspp::ArgumentDefinition({"value3", "value4", "value5"}, -1),
+        chesspp::ArgumentDefinition({"value6"}, 3),
+        chesspp::ArgumentDefinition({"value7", "value8", "value9"}, 0, true),
+        chesspp::ArgumentDefinition({"value10"}, 0),
+        };
+
+    chesspp::Command const test_command("test_command", accpeted_arguments);
+    std::vector<std::string> args = {
+        "value1",
+        "value6", "param0", "param1", "param2"};
+
+    EXPECT_THROW(test_command.parse_arguments(args), chesspp::MissingArgumentException);
 }
