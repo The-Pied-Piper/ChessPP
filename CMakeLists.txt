@@ -5,7 +5,7 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
 endif()
 
 set(This Chess++)
-
+set(CMAKE_EXPORT_COMPILE_COMMANDS)
 
 project(${This} VERSION 0.0.1
     DESCRIPTION "A chess UCI adapter"
