@@ -7,7 +7,7 @@
 namespace chesspp
 {
 /**
- * @brief Stores value of an actual command that was received.
+ * @brief Stores value of an actual argument that was received by the UCI engine
  *
  */
 struct Argument
